@@ -1,0 +1,36 @@
+20:04:23 **** Incremental Build of configuration Debug for project TEST_File ****
+make all 
+Building file: ../Program.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"Program.d" -MT"Program.o" -c -o "Program.o" "../Program.c"
+../Program.c: In function 'main':
+../Program.c:52: warning: large integer implicitly truncated to unsigned type
+Finished building: ../Program.c
+ 
+Building target: TEST_File.elf
+Invoking: AVR C++ Linker
+avr-g++ -Wl,-Map,TEST_File.map,--cref -mrelax -Wl,--gc-sections -mmcu=atmega16 -o "TEST_File.elf"  ./Program.o   
+Finished building target: TEST_File.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S TEST_File.elf  >"TEST_File.lss"
+Finished building: TEST_File.lss
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 TEST_File.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:     328 bytes (2.0% Full)
+(.text + .data + .bootloader)
+
+Data:          1 bytes (0.1% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+20:04:24 Build Finished. 0 errors, 1 warnings. (took 625ms)
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="true"/>
+		<item key="wholeword" value="true"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<item key="selection" value="U8LocNumber"/>
+		<list key="findhistory">
+			<item value="number"/>
+			<item value="Enable_Seg_Six"/>
+			<item value="Enable_Seg_Five"/>
+			<item value="Enable_Seg_Four"/>
+			<item value="Enable_Seg_Three"/>
+			<item value="Enable_Seg_Two"/>
+			<item value="Enable_Seg_One"/>
+			<item value="Int2_Flag"/>
+			<item value="Int1_Flag"/>
+			<item value="Int0_Flag"/>
+			<item value="count_HOUR"/>
+			<item value="count_MIN"/>
+			<item value="LOC_u8SecondsCount"/>
+			<item value="count_SEC"/>
+			<item value="temp"/>
+		</list>
+		<list key="replacehistory">
+			<item value="U8LocNumber"/>
+			<item value="U8_ENABLE_SEG_SIX"/>
+			<item value="U8_ENABLE_SEG_FIVE"/>
+			<item value="U8_ENABLE_SEG_FOUR"/>
+			<item value="U8_ENABLE_SEG_TWO"/>
+			<item value="U8_ENABLE_SEG_ONE"/>
+			<item value="u8ResumeButtonStatus"/>
+			<item value="u8PauseButtonStatus"/>
+			<item value="u8ResetButtonStatus"/>
+			<item value="u8HoursCount"/>
+			<item value="u8MinutesCount"/>
+			<item value="u8SecondsCount"/>
+			<item value="LOC_u8SecondsCount"/>
+			<item value="number"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="880"/>
+		<item key="DIALOG_Y_ORIGIN" value="205"/>
+		<item key="DIALOG_WIDTH" value="336"/>
+		<item key="DIALOG_HEIGHT" value="454"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+</section>

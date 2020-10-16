@@ -1,0 +1,173 @@
+/*
+ * Program.c
+ *
+ *  Created on: Dec 9, 2019
+ *      Author: micheal_onsy
+ */
+// Iam using TIMER1 , External INT0=> reset,INT1=> Pause & INT2=> resume
+// F_CPU=1 MHZ , Prescaler= 1024 , to make increment every one second put 977 in OCR1
+
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
+
+unsigned char count_SEC =0;
+unsigned char count_MIN =0;
+unsigned char count_HOUR=0;
+#define Enable_Seg_One   0x01
+#define Enable_Seg_Two   0x02
+#define Enable_Seg_Three 0x04
+#define Enable_Seg_Four  0x08
+#define Enable_Seg_Five  0x10
+#define Enable_Seg_Six   0x20
+unsigned char Int0_Flag =0;
+unsigned char Int1_Flag =0;
+unsigned char Int2_Flag =0;
+
+ISR(INT0_vect)
+{
+	Int0_Flag++;
+}
+ISR(INT1_vect)
+{
+	Int1_Flag++;
+}
+ISR(INT2_vect)
+{
+	_delay_ms(20);
+	if(!(PINB &(1<<PB2)))
+
+		TCCR1B |=(1<<CS12)|(1<<CS10);
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	count_SEC++;
+	if (count_HOUR==12)
+	{
+		count_HOUR=0;
+	}
+
+	if(count_MIN==60)
+	{
+		count_HOUR++;
+		count_MIN=0;
+	}
+	if(count_SEC==60)
+	{
+		count_MIN++;
+		count_SEC=0;
+	}
+
+}
+void Timer1_CTC_Init(int number )
+{
+	TCCR1A=(1<<FOC1A)|(11<<FOC1B);
+	TCCR1B= (1<<WGM12)|(1<<CS12)|(1<<CS10);
+	TCNT1=0;
+	OCR1A=number;
+	TIMSK=(1<<OCIE1A);
+	sei();
+
+}
+
+void Exteranl_Int0_Init(void)
+{
+	MCUCR|=(1<<ISC01);
+	GICR |= (1<<INT0);
+}
+void Exteranl_Int1_Init(void)
+{
+	MCUCR|=(1<<ISC11)|(1<<ISC10);
+	GICR |= (1<<INT2);
+}
+void Exteranl_Int2_Init(void)
+{
+	MCUCSR &=(~(1<<ISC2));
+	GICR |= (1<<INT1);
+}
+void Project_Init(void)
+{
+	DDRC |=(1<<PC0)|(1<<PC1)|(1<<PC2)|(1<<PC3);
+	DDRA |= (1<<PA0)|(1<<PA1)|(1<<PA2)|(1<<PA3)|(1<<PA4)|(1<<PA5);
+	PORTC&=(~(1<<PC0))&(~(1<<PC1))&(~(1<<PC2))&(~(1<<PC3));
+	DDRB &= ~(1<<PB2);//INT2
+	PORTB |=(1<<PB2);//Internal PULL UP INT2
+	DDRD &= ~(1<<PD2);//INT0
+	PORTD |=(1<<PD2);//Internal PULL UP INT
+	DDRD &= ~(1<<PD3);//INT1
+
+}
+int main (void)
+{
+	Project_Init();
+	Exteranl_Int0_Init();
+	Exteranl_Int1_Init();
+	Exteranl_Int2_Init();
+
+	Timer1_CTC_Init(977);
+	char  number;
+
+	while(1)
+	{
+
+		number = count_SEC % 10;
+		PORTA = Enable_Seg_One;
+		PORTC = number;
+		//_delay_ms(5);
+
+		number = count_SEC / 10;
+		PORTA = Enable_Seg_Two;
+		PORTC = number;
+		//_delay_ms(5);
+
+		number = count_MIN % 10;
+		PORTA = Enable_Seg_Three;
+		PORTC = number;
+		//_delay_ms(5);
+
+		number = count_MIN / 10;
+		PORTA = Enable_Seg_Four;
+		PORTC = number;
+		//_delay_ms(5);
+
+		number = count_HOUR %10;
+		PORTA =Enable_Seg_Five;
+		PORTC = number;
+		//_delay_ms(5);
+
+		number = count_HOUR / 10;
+		PORTA = Enable_Seg_Six;
+		PORTC = number;
+		//_delay_ms(5);
+
+		if (Int0_Flag==1)
+		{
+			_delay_ms(20);
+			if(!(PIND &(1<<PD2)))
+			{
+				count_SEC = 0 ;
+				count_MIN = 0 ;
+				count_HOUR= 0 ;
+			}
+			Int0_Flag=0;
+		}
+		if (Int1_Flag==1)
+		{
+			_delay_ms(20);
+			if(PIND &(1<<PD3))
+			{
+				TCCR1B &= (~(1<<CS12))&(~(1<<CS11))&(~(1<<CS10));
+			}
+			Int1_Flag=0;
+		}
+		if (Int2_Flag==1)
+		{
+
+			Int2_Flag=0;
+		}
+	}
+
+}
+
